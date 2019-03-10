@@ -5,8 +5,11 @@ import ru.ifmo.cli_application.tokens.IToken;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 /**
  * Class for concatenation files command
@@ -19,15 +22,17 @@ public class CatCommand implements IToken, IExecutable {
         }
         StringBuilder resultString = new StringBuilder();
         for (IToken fileName : args) {
-            try {
-                Scanner scanner = new Scanner(new FileInputStream(fileName.toString()));
-                while (scanner.hasNextLine()) {
-                    resultString.append(scanner.nextLine());
-                }
+            try (Stream<String> lines = Files.lines(Paths.get(fileName.getValue()))) {
+                lines.forEach((s)->resultString.append(s).append('\n'));
             } catch (IOException e) {
-                return "File not found: " + fileName.toString();
+                return "File not found: " + fileName.getValue();
             }
         }
         return resultString.toString();
+    }
+
+    @Override
+    public String getValue() {
+        return "cat";
     }
 }

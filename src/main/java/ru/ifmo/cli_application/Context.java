@@ -4,12 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Context {
-    private Map<String, String> variables;
+    private Map<String, String> variables = new HashMap<>();
     private boolean isClosed = false;
-
-    public Context() {
-        this.variables = new HashMap<>();
-    }
 
     public void setVariable(String variable, String result) {
         this.variables.put(variable, result);

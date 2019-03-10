@@ -21,4 +21,9 @@ public class ExitCommand implements IToken, IExecutable {
         ctx.exit();
         return "";
     }
+
+    @Override
+    public String getValue() {
+        return "exit";
+    }
 }

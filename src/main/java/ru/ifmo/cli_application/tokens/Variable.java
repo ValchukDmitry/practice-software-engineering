@@ -11,7 +11,7 @@ public class Variable implements IToken {
         this.ctx = ctx;
     }
 
-    public String toString() {
+    public String getValue() {
         return ctx.getVariable(variable.substring(1));
     }
 }

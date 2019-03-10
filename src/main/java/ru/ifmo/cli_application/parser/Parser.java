@@ -1,4 +1,4 @@
-package ru.ifmo.cli_application;
+package ru.ifmo.cli_application.parser;
 
 import ru.ifmo.cli_application.tokens.IToken;
 
@@ -15,19 +15,19 @@ public class Parser {
         this.splittingFunction = splittingFunction;
     }
 
-    public void addParsingRule(Function<String, Boolean> predicate, Function<String, IToken> constructor) {
-        this.rules.add(new ParserRule(predicate, constructor));
+    public void addParsingRule(ParserRule parserRule) {
+        this.rules.add(parserRule);
     }
 
     public List<IToken> parseTokens(String command) {
         List<String> splitedCommand = splittingFunction.apply(command);
         List<IToken> outputTokens = new ArrayList<>(splitedCommand.size());
         for (String commandToken : splitedCommand) {
-            if (commandToken.isEmpty() || commandToken.equals("\n")) {
+            if (commandToken.isEmpty()) {
                 continue;
             }
             for (ParserRule rule : rules) {
-                if (rule.getPredicate().apply(commandToken)) {
+                if (rule.getPredicate().apply(commandToken, outputTokens)) {
                     outputTokens.add(rule.getConstructor().apply(commandToken));
                     break;
                 }

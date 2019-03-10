@@ -7,7 +7,7 @@ public class FullyQuoted implements IToken {
         this.string = string.substring(1, string.length() - 1);
     }
 
-    public String toString() {
+    public String getValue() {
         return string;
     }
 }

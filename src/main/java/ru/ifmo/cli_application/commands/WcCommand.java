@@ -21,15 +21,15 @@ public class WcCommand implements IToken, IExecutable {
         }
         List<Stats> stats = new ArrayList<>();
         for (IToken arg : args) {
-            try (Scanner scanner = new Scanner(new FileInputStream(arg.toString()))) {
+            try (Scanner scanner = new Scanner(new FileInputStream(arg.getValue()))) {
                 StringBuilder fileContent = new StringBuilder();
                 while (scanner.hasNextLine()) {
                     fileContent.append(scanner.nextLine());
                     fileContent.append('\n');
                 }
-                stats.add(new Stats(arg.toString(), fileContent.toString()));
+                stats.add(new Stats(arg.getValue(), fileContent.toString()));
             } catch (FileNotFoundException e) {
-                return "File not found: " + arg.toString();
+                return "File not found: " + arg.getValue();
             }
         }
         if (stats.size() == 1) {
@@ -42,6 +42,11 @@ public class WcCommand implements IToken, IExecutable {
             stringBuilder.append('\n');
         }
         return stringBuilder.toString();
+    }
+
+    @Override
+    public String getValue() {
+        return "wc";
     }
 
     private class Stats {

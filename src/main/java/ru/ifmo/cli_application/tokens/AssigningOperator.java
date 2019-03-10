@@ -29,4 +29,9 @@ public class AssigningOperator implements IToken, IExecutable {
         ctx.setVariable(splitedString[0], splitedString[1]);
         return "";
     }
+
+    @Override
+    public String getValue() {
+        return "=";
+    }
 }

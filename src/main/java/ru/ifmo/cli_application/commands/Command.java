@@ -24,7 +24,7 @@ public class Command implements IToken, IExecutable {
             List<String> result = new ArrayList<>();
             result.add(commandName);
             for (IToken arg : args) {
-                result.add(arg.toString());
+                result.add(arg.getValue());
             }
             ProcessBuilder processBuilder = new ProcessBuilder();
             processBuilder.command(result);
@@ -36,7 +36,7 @@ public class Command implements IToken, IExecutable {
         }
     }
 
-    public String toString() {
+    public String getValue() {
         return commandName;
     }
 }

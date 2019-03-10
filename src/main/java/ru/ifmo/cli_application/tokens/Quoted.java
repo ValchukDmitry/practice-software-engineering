@@ -1,6 +1,6 @@
 package ru.ifmo.cli_application.tokens;
 
-import ru.ifmo.cli_application.Parser;
+import ru.ifmo.cli_application.parser.Parser;
 
 import java.util.List;
 
@@ -14,11 +14,11 @@ public class Quoted implements IToken {
     }
 
     @Override
-    public String toString() {
+    public String getValue() {
         List<IToken> tokens = parser.parseTokens(this.string);
         StringBuilder result = new StringBuilder();
         for (IToken token : tokens) {
-            result.append(token.toString());
+            result.append(token.getValue());
             result.append(" ");
         }
         return result.toString();
