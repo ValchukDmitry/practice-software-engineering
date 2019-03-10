@@ -33,6 +33,7 @@ public class SimpleParser extends Parser {
         predicates.add(new ParserRule((String s, List<IToken> t) -> s.equals("|"), (String s) -> new Pipe()));
         predicates.add(new ParserRule((String s, List<IToken> t) -> s.contains("="), (String s) -> new AssigningOperator(s, ctx)));
         predicates.add(new ParserRule((String s, List<IToken> t) -> isCommand.apply(t) && s.equals("cat"), (String s) -> new CatCommand()));
+        predicates.add(new ParserRule((String s, List<IToken> t) -> isCommand.apply(t) && s.equals("grep"), (String s) -> new GrepCommand()));
         predicates.add(new ParserRule((String s, List<IToken> t) -> isCommand.apply(t) && s.equals("echo"), (String s) -> new EchoCommand()));
         predicates.add(new ParserRule((String s, List<IToken> t) -> isCommand.apply(t) && s.equals("pwd"), (String s) -> new PwdCommand()));
         predicates.add(new ParserRule((String s, List<IToken> t) -> isCommand.apply(t) && s.equals("wc"), (String s) -> new WcCommand()));

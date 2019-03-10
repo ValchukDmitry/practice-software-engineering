@@ -1,6 +1,5 @@
 package ru.ifmo.cli_application.commands;
 
-import javafx.util.Pair;
 import net.sourceforge.argparse4j.impl.Arguments;
 import ru.ifmo.cli_application.tokens.IExecutable;
 import ru.ifmo.cli_application.tokens.IToken;
@@ -10,7 +9,6 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -81,5 +79,10 @@ public class GrepCommand implements IToken, IExecutable {
             stringBuilder.deleteCharAt(stringBuilder.lastIndexOf("\n"));
         }
         return stringBuilder.toString();
+    }
+
+    @Override
+    public String getValue() {
+        return "grep";
     }
 }
