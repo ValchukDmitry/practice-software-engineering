@@ -19,7 +19,7 @@ public class GrepCommand implements IToken, IExecutable {
     private String splitWordsRegex = "^|[ |\\n|\\r|\\t]+";
 
     private Namespace parseArguments(List<IToken> tokens) throws ArgumentParserException {
-        String[] args = tokens.stream().map(IToken::toString).toArray(String[]::new);
+        String[] args = tokens.stream().map(IToken::getValue).toArray(String[]::new);
         ArgumentParser parser = ArgumentParsers.newFor("Grep").build();
         parser.addArgument("-w").dest("whole word").action(Arguments.storeTrue());
         parser.addArgument("-i").dest("ignore case").action(Arguments.storeTrue());

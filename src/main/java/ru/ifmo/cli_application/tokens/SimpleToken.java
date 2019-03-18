@@ -7,7 +7,7 @@ public class SimpleToken implements IToken {
     }
 
     @Override
-    public String toString() {
+    public String getValue() {
         return tokenString;
     }
 }
