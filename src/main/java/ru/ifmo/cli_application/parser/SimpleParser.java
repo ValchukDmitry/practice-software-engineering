@@ -1,21 +1,25 @@
 package ru.ifmo.cli_application.parser;
 
-import ru.ifmo.cli_application.Context;
-import ru.ifmo.cli_application.commands.*;
-import ru.ifmo.cli_application.tokens.*;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
+import ru.ifmo.cli_application.Context;
+import ru.ifmo.cli_application.commands.*;
+import ru.ifmo.cli_application.tokens.*;
+
+/**
+ * Parser implementation for our CLI application
+ */
 public class SimpleParser extends Parser {
     private static Pattern splittingPattern = Pattern.compile("[^\\s\"']+|\"[^\"]*\"|'[^']*'");
     private Context ctx;
 
     public SimpleParser(Context ctx) {
-        super(SimpleParser::splitFunction);
         this.ctx = ctx;
         addParsingRules();
     }
@@ -40,12 +44,27 @@ public class SimpleParser extends Parser {
         }
     }
 
-    private static List<String> splitFunction(String string) {
-        Matcher matcher = splittingPattern.matcher(string);
+    public List<String> commandPreprocessing(String command) {
+        Matcher matcher = splittingPattern.matcher(command);
         List<String> list = new ArrayList<>();
         while (matcher.find()) {
             list.add(matcher.group());
         }
-        return list;
+        List<String> finalList = new ArrayList<>();
+        for (String elem : list) {
+            if (elem.contains("$") && !elem.startsWith("\'") && !elem.endsWith("\'")) {
+                String[] splitedElem = elem.split("\\$");
+                if (elem.startsWith("$")) {
+                    splitedElem[0] = new Variable("$" + splitedElem[0], ctx).getValue();
+                }
+                for (int i = 1; i < splitedElem.length; i++) {
+                    splitedElem[i] = new Variable("$" + splitedElem[i], ctx).getValue();
+                }
+                finalList.add(Arrays.stream(splitedElem).collect(Collectors.joining("")));
+            } else {
+                finalList.add(elem);
+            }
+        }
+        return finalList;
     }
 }
