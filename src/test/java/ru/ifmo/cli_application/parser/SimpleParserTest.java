@@ -73,4 +73,14 @@ public class SimpleParserTest {
         assertTrue(tokens.get(0) instanceof EchoCommand);
         assertTrue(tokens.get(1) instanceof FullyQuoted);
     }
+
+    @Test
+    public void testParsingCommandWithFullyQuotedArgWithDollar() {
+        Context ctx = new Context();
+        Parser parser = new SimpleParser(ctx);
+        List<IToken> tokens = parser.parseTokens("echo \'$x\'");
+        assertEquals(2, tokens.size());
+        assertTrue(tokens.get(0) instanceof EchoCommand);
+        assertTrue(tokens.get(1) instanceof FullyQuoted);
+    }
 }
