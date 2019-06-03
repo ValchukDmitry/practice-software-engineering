@@ -1,5 +1,8 @@
 package ru.ifmo.cli_application.tokens;
 
+/**
+ * Class for fully quoted token
+ */
 public class FullyQuoted implements IToken {
     private String string;
 

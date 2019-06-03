@@ -1,13 +1,13 @@
 package ru.ifmo.cli_application.commands;
 
-import ru.ifmo.cli_application.tokens.IExecutable;
-import ru.ifmo.cli_application.tokens.IToken;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import ru.ifmo.cli_application.tokens.IExecutable;
+import ru.ifmo.cli_application.tokens.IToken;
 
 /**
  * Class for calculation of lines, words and bytes count for each file

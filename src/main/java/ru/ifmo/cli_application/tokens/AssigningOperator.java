@@ -1,8 +1,8 @@
 package ru.ifmo.cli_application.tokens;
 
-import ru.ifmo.cli_application.Context;
-
 import java.util.List;
+
+import ru.ifmo.cli_application.Context;
 
 /**
  * Class for assigning operator execution

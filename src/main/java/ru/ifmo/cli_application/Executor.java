@@ -1,11 +1,11 @@
 package ru.ifmo.cli_application;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.ifmo.cli_application.tokens.IDelimiter;
 import ru.ifmo.cli_application.tokens.IExecutable;
 import ru.ifmo.cli_application.tokens.IToken;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Executor {
     private Context ctx;

@@ -1,15 +1,18 @@
 package ru.ifmo.cli_application;
 
-import ru.ifmo.cli_application.parser.Parser;
-import ru.ifmo.cli_application.parser.SimpleParser;
-import ru.ifmo.cli_application.tokens.*;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Scanner;
 
+import ru.ifmo.cli_application.parser.Parser;
+import ru.ifmo.cli_application.parser.SimpleParser;
+import ru.ifmo.cli_application.tokens.IToken;
+
+/**
+ * Main CLI application class
+ */
 public class Application {
     private Context ctx;
     private Parser parser;
@@ -17,6 +20,11 @@ public class Application {
     private InputStream inputStream;
     private OutputStream outputStream;
 
+    /**
+     * CLI application constructor
+     * @param inputStream stream for commands input
+     * @param outputStream stream for commands result output
+     */
     public Application(InputStream inputStream, OutputStream outputStream) {
         ctx = new Context();
         parser = new SimpleParser(ctx);
@@ -26,6 +34,10 @@ public class Application {
         executor = new Executor(ctx);
     }
 
+    /**
+     * Method for starting cli application
+     * @throws IOException in case of input or output stream is not working
+     */
     public void start() throws IOException {
         Scanner scanner = new Scanner(inputStream);
 

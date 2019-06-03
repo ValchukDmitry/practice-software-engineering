@@ -1,8 +1,8 @@
 package ru.ifmo.cli_application.tokens;
 
-import ru.ifmo.cli_application.parser.Parser;
-
 import java.util.List;
+
+import ru.ifmo.cli_application.parser.Parser;
 
 public class Quoted implements IToken {
     private String string;

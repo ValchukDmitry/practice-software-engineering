@@ -1,15 +1,13 @@
 package ru.ifmo.cli_application.commands;
 
-import ru.ifmo.cli_application.tokens.IExecutable;
-import ru.ifmo.cli_application.tokens.IToken;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Stream;
+
+import ru.ifmo.cli_application.tokens.IExecutable;
+import ru.ifmo.cli_application.tokens.IToken;
 
 /**
  * Class for concatenation files command

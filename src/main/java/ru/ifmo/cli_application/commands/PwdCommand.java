@@ -1,9 +1,9 @@
 package ru.ifmo.cli_application.commands;
 
+import java.util.List;
+
 import ru.ifmo.cli_application.tokens.IExecutable;
 import ru.ifmo.cli_application.tokens.IToken;
-
-import java.util.List;
 
 /**
  * Class for showing current working directory command

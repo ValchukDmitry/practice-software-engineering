@@ -1,12 +1,12 @@
 package ru.ifmo.cli_application.commands;
 
-import ru.ifmo.cli_application.tokens.IExecutable;
-import ru.ifmo.cli_application.tokens.IToken;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import ru.ifmo.cli_application.tokens.IExecutable;
+import ru.ifmo.cli_application.tokens.IToken;
 
 /**
  * Class for execution external bash commands

@@ -1,5 +1,8 @@
 package ru.ifmo.cli_application.tokens;
 
+/**
+ * Command`s argument
+ */
 public class Argument implements IToken {
     private String value;
 
