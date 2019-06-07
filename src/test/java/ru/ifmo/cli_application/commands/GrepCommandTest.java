@@ -103,4 +103,15 @@ public class GrepCommandTest {
                 "repositories {\n";
         assertEquals(expected, command.execute(tokens, text));
     }
+
+    @Test
+    public void testAfterNegative() {
+        GrepCommand command = new GrepCommand();
+        List<IToken> tokens = new ArrayList<>();
+        tokens.add(new SimpleToken("-A"));
+        tokens.add(new SimpleToken("-2"));
+        tokens.add(new SimpleToken("apply"));
+        assertEquals("After argument must be non-negative", command.execute(tokens, "nevermind"));
+    }
+
 }

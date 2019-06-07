@@ -41,6 +41,9 @@ public class GrepCommand implements IToken, IExecutable {
         if (namespace.get("ignore case")) {
             regex = regex.toLowerCase();
         }
+        if (Integer.compare(namespace.get("after"), 0) < 0) {
+            return "After argument must be non-negative";
+        }
 
         Pattern pattern = Pattern.compile(regex);
         StringBuilder stringBuilder = new StringBuilder();
