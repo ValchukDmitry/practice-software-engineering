@@ -1,11 +1,11 @@
 package ru.ifmo.cli_application.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import ru.ifmo.cli_application.tokens.IToken;
 import ru.ifmo.cli_application.tokens.SimpleToken;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -80,5 +80,27 @@ public class GrepCommandTest {
         tokens.add(new SimpleToken("3"));
         tokens.add(new SimpleToken("hello"));
         assertEquals("hello\nworld", command.execute(tokens, "hello\nworld"));
+    }
+
+    @Test
+    public void testAfterWithMatchesInARow() {
+        GrepCommand command = new GrepCommand();
+        List<IToken> tokens = new ArrayList<>();
+        tokens.add(new SimpleToken("-A"));
+        tokens.add(new SimpleToken("2"));
+        tokens.add(new SimpleToken("apply"));
+        String expected = "apply plugin: 'java'\n" +
+                "apply plugin: 'application'\n" +
+                "\n" +
+                "sourceCompatibility = 1.9";
+        String text = "version '1.0-SNAPSHOT'\n" +
+                "\n" +
+                "apply plugin: 'java'\n" +
+                "apply plugin: 'application'\n" +
+                "\n" +
+                "sourceCompatibility = 1.9\n" +
+                "\n" +
+                "repositories {\n";
+        assertEquals(expected, command.execute(tokens, text));
     }
 }
