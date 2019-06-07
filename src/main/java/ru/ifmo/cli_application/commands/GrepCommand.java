@@ -1,5 +1,8 @@
 package ru.ifmo.cli_application.commands;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -24,25 +27,14 @@ public class GrepCommand implements IToken, IExecutable {
         parser.addArgument("-i").dest("ignore case").action(Arguments.storeTrue());
         parser.addArgument("-A").dest("after").setDefault(0).type(Integer.class);
         parser.addArgument("regex");
-        parser.addArgument("file").nargs("*");
+        parser.addArgument("file").nargs("*").type(String.class);
         return parser.parseArgs(args);
     }
 
-    @Override
-    public String execute(List<IToken> args, String inputStream) {
-        Namespace namespace;
-        try {
-            namespace = parseArguments(args);
-        } catch (ArgumentParserException e) {
-            return e.toString();
-        }
+    private String processLines(List<String> lines, String prefix, Namespace namespace) {
         String regex = namespace.getString("regex");
-        String[] lines = inputStream.split("\n");
         if (namespace.get("ignore case")) {
             regex = regex.toLowerCase();
-        }
-        if (Integer.compare(namespace.get("after"), 0) < 0) {
-            return "After argument must be non-negative";
         }
 
         Pattern pattern = Pattern.compile(regex);
@@ -58,29 +50,73 @@ public class GrepCommand implements IToken, IExecutable {
                 String[] words = line.split(splitWordsRegex);
                 long count = Arrays.stream(words).filter(word -> pattern.matcher(word).matches()).count();
                 if (count > 0) {
-                    stringBuilder.append(line).append('\n');
+                    stringBuilder.append(prefix).append(line).append('\n');
                     printAfter = namespace.get("after");
                     continue;
                 }
             } else {
                 Matcher matcher = pattern.matcher(lineMatcher);
                 if (matcher.find()) {
-                    stringBuilder.append(line).append('\n');
+                    stringBuilder.append(prefix).append(line).append('\n');
                     printAfter = namespace.get("after");
                     continue;
                 }
             }
             if (printAfter > 0) {
                 printAfter--;
-                stringBuilder.append(line).append('\n');
-                continue;
+                stringBuilder.append(prefix).append(line).append('\n');
             }
         }
-
         if (stringBuilder.length() > 0) {
             stringBuilder.deleteCharAt(stringBuilder.lastIndexOf("\n"));
         }
         return stringBuilder.toString();
+    }
+
+    @Override
+    public String execute(List<IToken> args, String inputStream) {
+        Namespace namespace;
+        try {
+            namespace = parseArguments(args);
+        } catch (ArgumentParserException e) {
+            return e.toString();
+        }
+
+        if (Integer.compare(namespace.get("after"), 0) < 0) {
+            return "After argument must be non-negative";
+        }
+
+        List<String> fileNames = namespace.getList("file");
+        if (fileNames.isEmpty()) {
+            if (inputStream.isEmpty()) {
+                return "No file name";
+            } else {
+                String[] lines = inputStream.split("\n");
+                return processLines(Arrays.asList(lines), "", namespace);
+            }
+        }
+        StringBuilder result = new StringBuilder();
+        for (String fileName : fileNames) {
+            try {
+                List<String> lines = Files.readAllLines(Paths.get(fileName));
+                if (fileNames.size() > 1) {
+                    String curResult = processLines(lines, fileName + ": ", namespace);
+                    result.append(curResult);
+                    if (curResult.length() > 0) {
+                        result.append("\n");
+                    }
+                } else {
+                    result.append(processLines(lines, "", namespace))
+                            .append("\n");
+                }
+            } catch (IOException e) {
+                result.append("grep: ").append(fileName).append(": No such file or directory\n");
+            }
+        }
+        if (result.length() > 0) {
+            result.deleteCharAt(result.lastIndexOf("\n"));
+        }
+        return result.toString();
     }
 
     @Override

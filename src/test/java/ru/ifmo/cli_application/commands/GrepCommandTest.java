@@ -10,6 +10,9 @@ import ru.ifmo.cli_application.tokens.SimpleToken;
 import static org.junit.Assert.assertEquals;
 
 public class GrepCommandTest {
+    String goodFile = "src/test/resources/fileWithTestWord";
+    String badFile = "src/test/resources/fileWithoutTestWord";
+
     @Test
     public void testExecutionWithoutFlagsWithSubstring() {
         GrepCommand command = new GrepCommand();
@@ -112,6 +115,36 @@ public class GrepCommandTest {
         tokens.add(new SimpleToken("-2"));
         tokens.add(new SimpleToken("apply"));
         assertEquals("After argument must be non-negative", command.execute(tokens, "nevermind"));
+    }
+
+    @Test
+    public void testGrepFromOneFile() {
+        GrepCommand command = new GrepCommand();
+        List<IToken> tokens = new ArrayList<>();
+        tokens.add(new SimpleToken("test"));
+        tokens.add(new SimpleToken(goodFile));
+        assertEquals("test\ntest1", command.execute(tokens, ""));
+    }
+
+    @Test
+    public void testGrepFromTwoFiles() {
+        GrepCommand command = new GrepCommand();
+        List<IToken> tokens = new ArrayList<>();
+        tokens.add(new SimpleToken("test"));
+        tokens.add(new SimpleToken(goodFile));
+        tokens.add(new SimpleToken(badFile));
+        assertEquals(goodFile + ": test\n" + goodFile + ": test1",
+                command.execute(tokens, ""));
+    }
+
+    @Test
+    public void testGrepFromNotExistsFile() {
+        GrepCommand command = new GrepCommand();
+        List<IToken> tokens = new ArrayList<>();
+        tokens.add(new SimpleToken("test"));
+        tokens.add(new SimpleToken("notExistsFile"));
+        assertEquals("grep: notExistsFile: No such file or directory",
+                command.execute(tokens, ""));
     }
 
 }
