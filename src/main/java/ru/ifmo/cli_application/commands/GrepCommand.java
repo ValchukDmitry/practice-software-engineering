@@ -16,6 +16,11 @@ import net.sourceforge.argparse4j.inf.Namespace;
 import ru.ifmo.cli_application.tokens.IExecutable;
 import ru.ifmo.cli_application.tokens.IToken;
 
+/**
+ * Class for grep command, which searches the named input FILEs for
+ * lines containing a match to the given PATTERN.
+ * If no files are specified, grep searches standard input.
+ */
 public class GrepCommand implements IToken, IExecutable {
 
     private String splitWordsRegex = "^|[ |\\n|\\r|\\t]+";
